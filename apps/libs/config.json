@@ -1,0 +1,14 @@
+{
+    "gcm": {
+        "serverKey": "AAAAe-l367o:APA91bGKw9NlSXYeYzo7dQ1SKIs2OGKbI3HgIGEp9_IvonptQBHRq1gPvGAw5RVJrHPelyYfwjOc_GWBhAHDnSHFE-1JBOrupQpB4gbFY0G6kkq_GTJdq1X2e-6qIKrUhCX7wtaPob0v"
+    },
+    "jwt": {
+        "privateKey": "tasmanianDevil"
+    },
+    "mysql": {
+        "host"     : "localhost",
+        "user"     : "root",
+        "password" : "sandbox123",
+        "database" : "iot"
+    }
+}
