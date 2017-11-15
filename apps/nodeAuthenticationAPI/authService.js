@@ -89,7 +89,7 @@ app.post('/api/signup', function(req, res) {
     var name = req.body.name;
     var username = req.body.username;
     var password = req.body.password;
-    var typeId = req.body.type;
+    var typeId = req.body.typeId;
 
     User.register(name, username, password, typeId, function(error, results) {
         if(error) {
