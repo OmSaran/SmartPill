@@ -2,7 +2,7 @@
   "name": "smartpill",
   "version": "1.0.0",
   "description": "Smart Pill IOT Project",
-  "main": "service.js",
+  "main": "apps/nodeAuthenticationAPI/authService.js",
   "dependencies": {
     "async": "^2.5.0",
     "body-parser": "^1.18.2",
