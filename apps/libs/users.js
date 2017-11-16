@@ -66,6 +66,18 @@ User.findById = function(obj, callback) {
     })
 }
 
+User.getAllDoctors = function(callback) {
+    var qry = 'SELECT id, name, username FROM Users WHERE typeId=2';
+    connection.query(qry, function(error, results, fields) {
+        if(error) {
+            return callback('DB Error', null);
+        }
+        if(!results)
+            return callback(null, null);
+        return callback(null, results);
+    })
+}
+
 User.register = function(name, username, password, typeId, callback) {
     var qry = "INSERT INTO Users SET ? ";
     connection.query(qry, { name: name, username: username, password: password, typeId: typeId }, function(error, results, fields) {
