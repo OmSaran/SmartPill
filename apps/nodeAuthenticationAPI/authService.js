@@ -82,7 +82,8 @@ passport.use(new LocalStrategy(
  * {
  *   id: 1
  * }
- * @apiError (Error 400) {String} message Username Unavailable or Bad Request
+ * @apiError (Error 400) {String} message Bad Request
+ * @apiError (Error 409) {String} message Username Unavailable
  * @apiError (Error 500) {String} message Database Error
  */
 app.post('/api/signup', function(req, res) {
@@ -95,7 +96,7 @@ app.post('/api/signup', function(req, res) {
     User.register(name, username, password, typeId, function(error, results) {
         if(error) {
             if(error == "ER_DUP_ENTRY"){
-                return res.send(400, { message: "Username unavailable" });
+                return res.send(409, { message: "Username unavailable" });
             }
             if(error == "ER_NO_REFERENCED_ROW_2" || error == "ER_BAD_NULL_ERROR") {
                 return res.send(400, { message: "Bad Request" });
