@@ -6,6 +6,7 @@ var jwt = require('jsonwebtoken');
 var passportJWT = require("passport-jwt");
 var LocalStrategy = require('passport-local').Strategy;
 var gcm = require('node-gcm');
+var _ = require('underscore');
 
 var config = require('../libs/config.json');
 var User = require('../libs/users.js');
@@ -512,6 +513,16 @@ app.delete('/api/dosage/pillbottle/:id', passport.authenticate('jwt', { session:
 
             res.status(200).json({ message: "ok" });
         })
+    })
+})
+
+app.get('/api/doc', passport.authenticate('jwt', { session: false }), function(req, res) {
+    User.getAllDoctors(function(error, results) {
+        if(error)
+            return res.send(500, { message: 'DB Error' });
+        if(_.isEmpty(results))
+            return res.status(200);
+        res.send(200, results);
     })
 })
 
