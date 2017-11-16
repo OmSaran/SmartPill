@@ -128,15 +128,14 @@ DROP TABLE IF EXISTS `Users`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `Users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(64) DEFAULT NULL,
-  `username` varchar(32) DEFAULT NULL,
-  `password` varchar(64) DEFAULT NULL,
-  `typeId` int(11) DEFAULT NULL,
+  `name` varchar(64) NOT NULL,
+  `username` varchar(32) NOT NULL,
+  `password` varchar(64) NOT NULL,
+  `typeId` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`),
-  KEY `typeId` (`typeId`),
-  CONSTRAINT `users_ibfk_1` FOREIGN KEY (`typeId`) REFERENCES `Type` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=latin1;
+  KEY `typeId` (`typeId`)
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -185,4 +184,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-11-15 19:05:48
+-- Dump completed on 2017-11-16  5:38:54
