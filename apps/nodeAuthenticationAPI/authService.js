@@ -82,8 +82,7 @@ passport.use(new LocalStrategy(
  * {
  *   id: 1
  * }
- * @apiError (Error 400) {String} message Username unavailable 
- * @apiError (Error 400) {String} message Bad Request
+ * @apiError (Error 400) {String} message Username Unavailable or Bad Request
  * @apiError (Error 500) {String} message Database Error
  */
 app.post('/api/signup', function(req, res) {
