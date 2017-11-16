@@ -518,7 +518,7 @@ app.delete('/api/dosage/pillbottle/:id', passport.authenticate('jwt', { session:
 
 
 /**
- * @api {post} /api/doc Doctor List
+ * @api {get} /api/doc Doctor List
  * @apiName Doctor List
  * @apiDescription Get list of all doctors
  * @apiGroup Users
