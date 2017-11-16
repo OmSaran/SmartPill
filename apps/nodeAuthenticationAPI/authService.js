@@ -56,6 +56,19 @@ passport.use(new LocalStrategy(
     }
 ));
 
+// Middleware to authorize modification of dosage.
+var verifyAccess = function(req, res, next) {
+    pillbottle.verifyModAccess(req.user.id, req.params.id, function(error, results) {
+        if(error) {
+            return res.sendStatus(500);
+        }
+        if(results.length == 0) {
+            return res.send(401);
+        }
+        next();
+    })
+}
+
 // Sign up for both, the patient and the doctor. Type 1 = Patient, 2 = Doctor
 
 /**
