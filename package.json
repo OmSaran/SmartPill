@@ -23,5 +23,8 @@
     "start": "node apps/nodeAuthenticationAPI/authService.js"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "engines": {
+    "node": "6.11.4"
+  }  
 }
