@@ -255,6 +255,6 @@ app.post('/api/pillbottle/doc', passport.authenticate('jwt', { session: false })
     })
 })
 
-app.listen(process.env.PORT || 3000, function() {
-    console.log('Hosted on ');
+var listener = app.listen(process.env.PORT || 3000, function() {
+    console.log('Hosted on ' + listener.address().port);
 })
