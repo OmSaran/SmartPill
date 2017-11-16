@@ -20,9 +20,12 @@
   },
   "devDependencies": {},
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node apps/nodeAuthenticationAPI/authService.js"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "engines": {
+    "node": "^6.11.1",
+    "npm": "^3.10.10"
+  }  
 }
