@@ -23,6 +23,7 @@ jwtOptions.secretOrKey = config.jwt.privateKey;
 // middlewares
 app.use(bodyParser());
 app.use(passport.initialize());
+app.use(express.static('../views'));
 
 var jstrategy = new JwtStrategy(jwtOptions, function(jwt_payload, next) {
     // usually this would be a database call:
