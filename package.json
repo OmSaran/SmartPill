@@ -24,6 +24,7 @@
   "author": "",
   "license": "ISC",
   "engines": {
-    "node": "6.11.4"
+    "node": "6.11.4",
+    "npm": "3.10.10"
   }  
 }
