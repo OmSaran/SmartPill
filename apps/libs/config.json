@@ -6,9 +6,9 @@
         "privateKey": "tasmanianDevil"
     },
     "mysql": {
-        "host"     : "localhost",
-        "user"     : "root",
-        "password" : "sandbox123",
-        "database" : "iot"
+        "host"     : "us-cdbr-iron-east-05.cleardb.net",
+        "user"     : "ba784b88a6a605",
+        "password" : "020a5b25",
+        "database" : "heroku_35f2b848a6235a7"
     }
 }
