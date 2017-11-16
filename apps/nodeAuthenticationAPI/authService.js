@@ -516,6 +516,26 @@ app.delete('/api/dosage/pillbottle/:id', passport.authenticate('jwt', { session:
     })
 })
 
+
+/**
+ * @api {post} /api/doc Doctor List
+ * @apiName Doctor List
+ * @apiDescription Get list of all doctors
+ * @apiGroup Users
+ * 
+ * @apiSuccess {Number} id ID of the doctor
+ * @apiSuccess {String} name Name of the doctor
+ * @apiSuccess {String} username username of the doctor
+ * @apiSuccessExample {json} Success-Example: 
+ * [
+ *    {
+ *       "id": 2,
+ *        "name": "Bala",
+ *        "username": "bala"
+ *    }
+ * ]
+ * @apiError (Error 401) Unauthorized Bad Access Token
+ */
 app.get('/api/doc', passport.authenticate('jwt', { session: false }), function(req, res) {
     User.getAllDoctors(function(error, results) {
         if(error)
