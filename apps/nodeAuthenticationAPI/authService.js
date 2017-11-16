@@ -23,6 +23,7 @@ jwtOptions.secretOrKey = config.jwt.privateKey;
 // middlewares
 app.use(bodyParser());
 app.use(passport.initialize());
+app.use(express.static('./apps/views'));
 
 var jstrategy = new JwtStrategy(jwtOptions, function(jwt_payload, next) {
     // usually this would be a database call:
@@ -255,6 +256,6 @@ app.post('/api/pillbottle/doc', passport.authenticate('jwt', { session: false })
     })
 })
 
-app.listen(process.env.PORT || 3000, function() {
-    console.log('Hosted on ');
+var listener = app.listen(process.env.PORT || 3000, function() {
+    console.log('Hosted on ' + listener.address().port);
 })
