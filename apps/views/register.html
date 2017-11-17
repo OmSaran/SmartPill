@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html ng-app="myApp" lang="en">
+<html ng-app="registerApp" lang="en">
 <head>
     <title> Smart Pill </title>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-route.js"></script>
-    <script src="myApp.js"></script>
+    <script src="register.js"></script>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -22,19 +22,20 @@
     <link rel="apple-touch-icon-precomposed" href="assets/ico/apple-touch-icon-57-precomposed.png">
 </head>
 <body>
-    
-        <div class="top-content">
-                
-                <div class="inner-bg">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-sm-8 col-sm-offset-2 text">
-                                <h1><strong>SmartPill</strong> Login Form</h1>
-                                <div class="description">
-                                    <p>
-                                        Smart Pill Application
-                                    </p>
-                                </div>
+
+    <div class="top-content">
+            
+            <div class="inner-bg">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm-8 col-sm-offset-2 text">
+                            <h1><strong>SmartPill</strong> Registration Form for <strong>Doctors</strong></h1>
+                            <div class="description">
+                                <p>
+                                    Make the interaction with your patients easier with easy-to-use interactive interfaces we provide. 
+                                    <br/>
+                                    Come register and be a part of the community! :)
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -42,15 +43,19 @@
                         <div class="col-sm-6 col-sm-offset-3 form-box">
                             <div class="form-top">
                                 <div class="form-top-left">
-                                    <h3>Login to our site</h3>
-                                    <p>Enter your username and password to log on:</p>
+                                    <h3>Register on our site</h3>
+                                    <p>Enter the details below to register yourself:</p>
                                 </div>
                                 <div class="form-top-right">
                                     <i class="fa fa-lock"></i>
                                 </div>
                             </div>
-                            <div class="form-bottom" ng-controller="login_controller">
+                            <div class="form-bottom" ng-controller="registration_controller">
                                 <form>
+                                    <div class="form-group">
+                                        <label class="sr-only" for="form-username">Name</label>
+                                        <input type="text" required ng-model="name" name="form-username" placeholder="Name" class="form-username form-control" id="form-username">
+                                    </div>
                                     <div class="form-group">
                                         <label class="sr-only" for="form-username">Username</label>
                                         <input type="text" required ng-model="username" name="form-username" placeholder="Username" class="form-username form-control" id="form-username">
@@ -59,32 +64,20 @@
                                         <label class="sr-only" for="form-password">Password</label>
                                         <input type="password" required ng-model="password" name="form-password" placeholder="Password  " class="form-password form-control" id="form-password">
                                     </div>
+                                    <div class="form-group">
+                                        <label class="sr-only" for="form-password">Confirm Password</label>
+                                        <input type="password" required ng-model="confirm_password" name="form-password" placeholder="Confirm Password  " class="form-password form-control" id="form-password">
+                                    </div>
                                     <div>
-                                        <p>{{message}}<a href="/register.html"><b>{{register_link}}</b></a></p>
+                                        <p style="color:white;"><strong>{{message}}</strong><a href="/index.html"><b>{{login_link}}</b></a></p>
                                         <input type="submit" hidden/>
-                                        <button ng-click="login()" class="btn">Sign in!</button>
+                                        <button ng-click="register()" class="btn">REGISTER</button>
                                     </div>
                                 </form>
                             </div>
                         </div>
                     </div>
 
-                    <!--<div class="row">
-                        <div class="col-sm-6 col-sm-offset-3 social-login">
-                            <h3>...or login with:</h3>
-                            <div class="social-login-buttons">
-                                <a class="btn btn-link-2" href="#">
-                                    <i class="fa fa-facebook"></i> Facebook
-                                </a>
-                                <a class="btn btn-link-2" href="#">
-                                    <i class="fa fa-twitter"></i> Twitter
-                                </a>
-                                <a class="btn btn-link-2" href="#">
-                                    <i class="fa fa-google-plus"></i> Google Plus
-                                </a>
-                            </div>
-                        </div>
-                    </div>-->
                 </div>
             </div>
             
@@ -115,6 +108,4 @@
 </div>-->
 </body>          
 
-
 </html>
-
