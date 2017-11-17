@@ -573,7 +573,7 @@ app.get('/api/doc', passport.authenticate('jwt', { session: false }), function(r
  * ]
  * 
  * @apiError (Error 500) Database Error
- * @apiSuccess (204) {String} No Content 
+ * @apiSuccess (204) {String} Message No Content 
  */
 
 app.get('/api/doc/patient', passport.authenticate('jwt', { session: false }), function(req, res) {
