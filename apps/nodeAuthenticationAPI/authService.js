@@ -523,6 +523,10 @@ app.delete('/api/dosage/pillbottle/:id', passport.authenticate('jwt', { session:
  * @apiDescription Get list of all doctors
  * @apiGroup Users
  * 
+ * @apiHeader Authorization Bearer Access Token
+ * @apiHeaderExample Request-Header: 
+ * Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0Ij0xNTA4Njc1OTc1fQ.96NXj1C8wxkfy5f_vjDrDH1Pl4GzUB299ikwlWYinNg
+ * 
  * @apiSuccess {Number} id ID of the doctor
  * @apiSuccess {String} name Name of the doctor
  * @apiSuccess {String} username username of the doctor
@@ -542,6 +546,45 @@ app.get('/api/doc', passport.authenticate('jwt', { session: false }), function(r
             return res.send(500, { message: 'DB Error' });
         if(_.isEmpty(results))
             return res.status(200);
+        res.send(200, results);
+    })
+})
+
+/**
+ * @api {get} /api/doc/patient Doctor's Patients
+ * @apiName Doctor's Patients List
+ * @apiDescription To get the list of doctor's all patients
+ * @apiGroup Users
+ * 
+ * @apiHeader Authorization Bearer Access Token
+ * @apiHeaderExample Request-Header: 
+ * Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0Ij0xNTA4Njc1OTc1fQ.96NXj1C8wxkfy5f_vjDrDH1Pl4GzUB299ikwlWYinNg
+ * 
+ * @apiSuccess (200) {Number} id ID of the patient
+ * @apiSuccess (200) {String} name Name of the patient
+ * @apiSuccess (200) {String} username username of the patient
+ * @apiSuccessExample {json} Success-Example: 
+ * [
+ *    {
+ *       "id": 2,
+ *        "name": "Bala",
+ *        "username": "bala"
+ *    }
+ * ]
+ * 
+ * @apiError (Error 500) Database Error
+ * @apiSuccess (204) {String} No Content 
+ */
+
+app.get('/api/doc/patient', passport.authenticate('jwt', { session: false }), function(req, res) {
+    User.findPatientsOfDoc({id: req.user.id}, function(error, results) {
+        if(error) {
+            res.send(500, { message: 'DB Error' });
+        }
+        if(_.isEmpty(results)) {
+            return res.status(204).send();
+        }
+            
         res.send(200, results);
     })
 })

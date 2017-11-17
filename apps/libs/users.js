@@ -101,6 +101,20 @@ User.addDevice = function(userId, platform, deviceId, callback) {
     })
 }
 
+User.findPatientsOfDoc = function(obj, callback) {
+    var qry = 'SELECT DISTINCT id, name, username ' + 
+    'FROM users, userpill ' + 
+    'WHERE users.typeId=1 AND userpill.userId=users.id AND userpill.pillBottleId IN ' + 
+    '(SELECT pillBottleId from userpill, users WHERE users.id = ? AND users.typeId = 2 AND userpill.userId = users.id )';
+
+    connection.query(qry, [obj.id], function(error, results, fields) {
+        if(error) {
+            return callback(error, null);
+        }
+        callback(null, results);
+    })
+}
+
 User.findByUsername = function(obj, callback) {
     var qry = 'SELECT * FROM Users WHERE username = ?';
     connection.query(qry, [obj.username], function(error, results, fields) {
