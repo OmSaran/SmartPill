@@ -340,6 +340,7 @@ app.post('/api/pillbottle/doc', passport.authenticate('jwt', { session: false })
  * @apiError (Error 500) InternalError Database Error
  */
 app.get('/api/pillbottle', passport.authenticate('jwt', { session: false }), function(req, res) {
+    res.send(404, 'api not found');
     pillbottle.getAllByUserId(req.user.id, function(error, results) {
         if(error)
             return res.status(500).json({message: 'DB Error'});
@@ -622,7 +623,7 @@ app.get('/api/doc/patient', passport.authenticate('jwt', { session: false }), fu
 })
 
 // To record consumption of pill
-app.post('api/pill/:id', passport.authenticate('jwt'), verifyConsumption, function(req, res) {
+app.post('/api/pill/:id', passport.authenticate('jwt'), verifyConsumption, function(req, res) {
     var pillBottleId = req.params.id;
     var numberOfPills = req.body.numberOfPills;
     var timestamp = req.body.timestamp;

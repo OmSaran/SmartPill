@@ -97,7 +97,7 @@ pillbottle.getCourseDetails = function(pillBottleId, callback) {
     var qry = 'SELECT pill, course, description, timestamp FROM pillbottle ' +
     'LEFT JOIN pillbottledosage ' +
     'ON pillbottledosage.pillBottleId = pillbottle.id';
-    'WHERE pillbottle.id = ? ' +
+    'WHERE pillbottle.id = ? ';
 
     // var qry = 'SELECT pill, course, description, timestamp FROM pillbottle ' +
     // 'WHERE id = ? ' +
