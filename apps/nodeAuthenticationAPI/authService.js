@@ -674,6 +674,42 @@ app.post('/api/pill/:id', passport.authenticate('jwt', { session: false }), veri
     })
 });
 
+/**
+ * @api {get} /api/doc/patient/:patientUsername Patient's details
+ * @apiName Doctor's Patient's details
+ * @apiDescription Get patient's authorized pillbottle details
+ * @apiGroup Users
+ * 
+ * @apiHeader Authorization Bearer Access Token
+ * @apiHeaderExample Request-Header: 
+ * Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0Ij0xNTA4Njc1OTc1fQ.96NXj1C8wxkfy5f_vjDrDH1Pl4GzUB299ikwlWYinNg
+ * 
+ * @apiSuccess (200) {Number} id ID of the pillBottle
+ * @apiSuccess (200) {String} pill Name of the pill
+ * @apiSuccess (200) {String} course course ID
+ * @apiSuccess (200) {String} description Description of the pill
+ * @apiSuccess (200) {String} dosage Dosage Times 
+ * @apiSuccessExample {json} Success-Example: 
+ * [
+ *   {
+ *       "id": "1",
+ *       "pill": null,
+ *       "course": 0,
+ *       "description": null,
+ *       "dosage": []
+ *   },
+ *   {
+ *       "id": "18",
+ *       "pill": null,
+ *       "course": 0,
+ *       "description": null,
+ *       "dosage": []
+ *   }
+ * ]
+ * 
+ * @apiError (Error 500) Database Error
+ * @apiSuccess (204) {String} Message No Content 
+ */
 app.get('/api/doc/patient/:patientUsername', passport.authenticate('jwt', { session: false }), function(req, res) {
     pillbottle.getPatientDetailsByDoc(req.user.id, req.params.patientUsername, function(error, results) {
         if(error) {
