@@ -627,13 +627,13 @@ app.post('/api/pill/:id', passport.authenticate('jwt', { session: false }), veri
     var pillBottleId = req.params.id;
     var numberOfPills = req.body.numberOfPills;
     var timestamp = req.body.timestamp;
-    pillBottle.getCourseDetails(pillBottleId, function(error, results){
+    pillbottle.getCourseDetails(pillBottleId, function(error, results){
         if(error) {
             return res.status(500).json({ message: 'DB Error' });
         }
         var courseId = results.courseId;
         var description = results.description;
-        var pillName = results.pill;
+        var pillName = results.pillName;
         var dosage = results.dosage;
 
         var document = {
@@ -642,8 +642,8 @@ app.post('/api/pill/:id', passport.authenticate('jwt', { session: false }), veri
             description: description,
             pillName: pillName,
             timestamp: timestamp,
-            numberOfPills: numberofPills,
-            currentDosage: currentDosage
+            numberOfPills: numberOfPills,
+            dosage: dosage
         }
         console.log(document);
         client.index({
@@ -651,9 +651,12 @@ app.post('/api/pill/:id', passport.authenticate('jwt', { session: false }), veri
             type: 'consumeEvent',
             body: document
         }, function(error, response) {
-            if(error)
+            if(error) {
+                console.log(error);
                 return res.status(500).json({ message: 'DB Error' });
-            return res.send(response);
+            }
+            if(response.result == 'created')
+                return res.status(201).send( );
         });
     })
 });

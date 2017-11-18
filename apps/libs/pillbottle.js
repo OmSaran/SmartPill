@@ -96,7 +96,7 @@ pillbottle.verifyConsumption = function(userId, pillBottleId, callback) {
 pillbottle.getCourseDetails = function(pillBottleId, callback) {
     var qry = 'SELECT pill, course, description, timestamp FROM pillbottle ' +
     'LEFT JOIN pillbottledosage ' +
-    'ON pillbottledosage.pillBottleId = pillbottle.id';
+    'ON pillbottledosage.pillBottleId = pillbottle.id ' +
     'WHERE pillbottle.id = ? ';
 
     // var qry = 'SELECT pill, course, description, timestamp FROM pillbottle ' +
@@ -106,8 +106,10 @@ pillbottle.getCourseDetails = function(pillBottleId, callback) {
     // 'WHERE pillBottleId = ?';
 
     connection.query(qry, [pillBottleId], function(error, results) {
-        if(error) 
+        if(error) {
+            console.log(error);
             return callback(error, null);
+        }
         if(_.isEmpty(results))
             return callback(null, null);
 
