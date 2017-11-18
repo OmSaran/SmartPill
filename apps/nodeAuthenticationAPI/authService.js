@@ -632,7 +632,7 @@ app.get('/api/doc/patient', passport.authenticate('jwt', { session: false }), fu
  * @apiHeaderExample Request-Header:
  * Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0Ij0xNTA4Njc1OTc1fQ.96NXj1C8wxkfy5f_vjDrDH1Pl4GzUB299ikwlWYinNg
  * 
- * @apiSuccess (201) {String} Created Successfully created event document in elasticsearch
+ * @apiSuccess (201) Created Successfully created event document in elasticsearch
  * 
  * @apiError (Error 500) InternalError Database Error
  */
