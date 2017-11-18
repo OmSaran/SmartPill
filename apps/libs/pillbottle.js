@@ -66,6 +66,8 @@ pillbottle.addDoctor = function(doctorUsername, pillBottleId, callback) {
     })
 }
 
+
+
 pillbottle.verifyModAccess = function (userId, pillBottleId, callback) {
     var qry = "SELECT users.name FROM users, userpill " + 
     "WHERE users.id = ? AND users.typeId = 2 AND userpill.pillBottleId = ? AND userpill.userId = ?";
@@ -79,6 +81,46 @@ pillbottle.verifyModAccess = function (userId, pillBottleId, callback) {
     })
 }
 
+pillbottle.verifyConsumption = function(userId, pillBottleId, callback) {
+    var qry = 'SELECT * FROM userpill WHERE userId = ? AND pillBottleId = ?';
+
+    connection.query(qry, [userId, pillBottleId], function(error, results, fields) {
+        if(error) {
+            console.log(error);
+            return callback('DB Error', null);
+        }
+        callback(null, results);
+    })
+}
+
+pillbottle.getCourseDetails = function(pillBottleId, callback) {
+    var qry = 'SELECT pill, course, description, timestamp FROM pillbottle, pillbottledosage ' +
+    'WHERE pillbottle.id = ? ' +
+    'AND pillbottledosage.pillBottleId = pillbottle.id';
+
+    // var qry = 'SELECT pill, course, description, timestamp FROM pillbottle ' +
+    // 'WHERE id = ? ' +
+    // 'UNION ' +
+    // 'timestamp FROM pillbottledosage ' +
+    // 'WHERE pillBottleId = ?';
+
+    connection.query(qry, [pillBottleId, pillBottleId], function(error, results) {
+        if(error) 
+            return callback(error, null);
+        if(_.isEmpty(results))
+            return callback(null, null);
+
+        var output = {
+            courseId: results[0].course,
+            description: results[0].description,
+            pillName: results[0].pill,
+            dosage: _.compact(_.pluck(results, 'timestamp'))
+        }
+
+        callback(null, output);
+    })
+}
+ 
 pillbottle.getById = function (userId, pillBottleId, callback) {
     var qry = "SELECT pb.pill, pb.course, pb.description, dosage.timestamp, pb.id " +
         "FROM PillBottle pb, UserPill userpill, PillBottleDosage dosage " +

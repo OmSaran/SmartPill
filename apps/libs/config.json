@@ -10,5 +10,11 @@
         "user"     : "ba784b88a6a605",
         "password" : "020a5b25",
         "database" : "heroku_35f2b848a6235a7"
+    },
+    "elasticsearch": {
+        "host": "first-cluster-2933671312.us-east-1.bonsaisearch.net",
+        "username": "xkafkd3rtb",
+        "password": "bfnknkd1si",
+        "mapping": "dosage/consumeEvent"
     }
 }

@@ -7,6 +7,7 @@ var passportJWT = require("passport-jwt");
 var LocalStrategy = require('passport-local').Strategy;
 var gcm = require('node-gcm');
 var _ = require('underscore');
+var elasticsearch = require('elasticsearch');
 
 var config = require('../libs/config.json');
 var User = require('../libs/users.js');
@@ -20,6 +21,25 @@ var JwtStrategy = passportJWT.Strategy;
 var jwtOptions = {}
 jwtOptions.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
 jwtOptions.secretOrKey = config.jwt.privateKey;
+var client = new elasticsearch.Client({
+    host: config.elasticsearch.host,
+    httpAuth: config.elasticsearch.username + ':' + config.elasticsearch.password,
+    apiVersion: '6.0',
+    // log: 'trace'
+});
+
+client.search({
+    index: 'dosage',
+    type: 'consumeEvent',
+    body: {
+        "query": {
+            "match_all": {}
+        }
+    }
+}).then(function (resp) {
+    var hits = resp.hits.hits[0];
+    console.log(hits);
+})
 
 // middlewares
 app.use(bodyParser());
@@ -64,6 +84,18 @@ var verifyAccess = function(req, res, next) {
             return res.sendStatus(500);
         }
         if(results.length == 0) {
+            return res.send(401);
+        }
+        next();
+    })
+}
+// Middleware to authorize pill consumption
+var verifyConsumption = function(req, res, next) {
+    pillbottle.verifyConsumption(req.user.id, req.params.id, function(error, results) {
+        if(error) {
+            return res.sendStatus(500);
+        }
+        if(_.isEmpty(results)) {
             return res.send(401);
         }
         next();
@@ -590,13 +622,51 @@ app.get('/api/doc/patient', passport.authenticate('jwt', { session: false }), fu
 })
 
 // To record consumption of pill
-app.post('api/pill', passport.authenticate('jwt'), function(req, res) {
-    var pillBottleId = req.body.pillBottleId;
-    pillbottle.getById(req.user.id, pillBottleId, function(error, results) {
+app.post('api/pill/:id', passport.authenticate('jwt'), verifyConsumption, function(req, res) {
+    var pillBottleId = req.params.id;
+    var numberOfPills = req.body.numberOfPills;
+    var timestamp = req.body.timestamp;
+    pillBottle.getCourseDetails(pillBottleId, function(error, results){
+        if(error) {
+            return res.status(500).json({ message: 'DB Error' });
+        }
+        var courseId = results.courseId;
+        var description = results.description;
+        var pillName = results.pill;
+        var dosage = results.dosage;
 
+        var document = {
+            pillBottleId: pillBottleId,
+            courseId: courseId,
+            description: description,
+            pillName: pillName,
+            timestamp: timestamp,
+            numberOfPills: numberofPills,
+            currentDosage: currentDosage
+        }
+        console.log(document);
+        client.index({
+            index: 'dosage',
+            type: 'consumeEvent',
+            body: document
+        }, function(error, response) {
+            if(error)
+                return res.status(500).json({ message: 'DB Error' });
+            return res.send(response);
+        });
     })
 });
 
 var listener = app.listen(process.env.PORT || 3000, function() {
     console.log('Hosted on ' + listener.address().port);
 })
+
+
+var edb = {
+    pillBottleId: 1,
+    courseId: 2,
+    description: 'blabla',
+    pillName: 'monetk',
+    timestamp: '',
+    numberOfPills: 2
+}
