@@ -122,11 +122,18 @@ pillbottle.getCourseDetails = function(pillBottleId, callback) {
 }
  
 pillbottle.getById = function (userId, pillBottleId, callback) {
-    var qry = "SELECT pb.pill, pb.course, pb.description, dosage.timestamp, pb.id " +
-        "FROM PillBottle pb, UserPill userpill, PillBottleDosage dosage " +
-        "WHERE userpill.userId = ? AND userpill.pillBottleId = ? AND dosage.pillBottleId = ? AND pb.id = ?";
+    var qry = 'SELECT id, course, pill, description, timestamp ' +
+    'FROM pillbottle ' +
+    'LEFT JOIN  ' +
+    'pillbottledosage ' +
+    'ON pillbottle.id = pillbottledosage.pillBottleId ' +
+    'WHERE pillbottle.id = ? '
+
+    // var qry = "SELECT pb.pill, pb.course, pb.description, dosage.timestamp, pb.id " +
+    //     "FROM PillBottle pb, UserPill userpill, PillBottleDosage dosage " +
+    //     "WHERE userpill.userId = ? AND userpill.pillBottleId = ? AND dosage.pillBottleId = ? AND pb.id = ?";
     // connection.connect();
-    connection.query(qry, [userId, pillBottleId, pillBottleId, pillBottleId], function(error, results, fields) {
+    connection.query(qry, [pillBottleId], function(error, results, fields) {
         if(error){
             console.log(error);
             return callback ('DB Error', null);
@@ -138,8 +145,9 @@ pillbottle.getById = function (userId, pillBottleId, callback) {
         retObj.pill = results[0].pill;
         retObj.course = results[0].course;
         retObj.description = results[0].description;
-        retObj.dosage = _.map(results, function(obj) {
-                return { time: obj.timestamp };
+        var dosageArray = _.compact(_.pluck(results, 'timestamp'));
+        retObj.dosage = _.map(dosageArray, function(obj) {
+                return { time: obj };
             })
         return callback(null, results[0]);
     });

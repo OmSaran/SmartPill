@@ -383,7 +383,7 @@ app.get('/api/pillbottle', passport.authenticate('jwt', { session: false }), fun
  * @apiError (Error 401) Unauthorized Bad Access Token / Bad Doctor Username
  * @apiError (Error 500) InternalError Database Error
  */
-app.get('/api/pillbottle/:id', passport.authenticate('jwt', { session: false }), function(req, res) {
+app.get('/api/pillbottle/:id', passport.authenticate('jwt', { session: false }), verifyConsumption, function(req, res) {
     pillbottle.getById(req.user.id, req.params.id, function(error, results) {
         if(error)
             return res.send('error');
