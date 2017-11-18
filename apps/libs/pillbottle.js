@@ -93,6 +93,46 @@ pillbottle.verifyConsumption = function(userId, pillBottleId, callback) {
     })
 }
 
+pillbottle.getPatientDetailsByDoc = function(doctorId, patientUsername, callback) {
+    var qry = 'SELECT pill, course, description, timestamp FROM pillbottle ' +
+    'LEFT JOIN pillbottledosage ' +
+    'ON pillbottledosage.pillBottleId = pillbottle.id ' +
+    'WHERE pillbottle.id IN ' +
+    '( ' +
+        'SELECT pillBottleId FROM userpill WHERE userId = ? AND pillBottleId IN ( ' +
+            'SELECT pillBottleId FROM userpill, users WHERE userpill.userId = users.id AND users.username = ? ' +
+        ') ' +
+    ') ';
+
+
+    connection.query(qry, [doctorId, patientUsername], function(error, results) {
+        if(error) {
+            console.log(error);
+            return callback(error, null);
+        }
+        if(_.isEmpty(results))
+            return callback(null, null);
+    });
+
+    var grouped = _.groupBy(results, function(obj) { return obj.id })
+    var objectified = _.mapObject(grouped, function(val, key) { 
+        var obj = {};
+        obj.id = key;
+        obj.pill = val[0].pill;
+        obj.course = val[0].course;
+        obj.description = val[0].description;
+        // obj.dosage = _.map(val, function(obj) { return { time: obj.timestamp } });
+        var dosageArray = _.compact(_.pluck(val, 'timestamp'));
+        obj.dosage = _.map(dosageArray, function(obj) { return { time: obj } });
+
+        return obj;
+    });
+
+    var objArray = _.values(objectified);
+    // console.log(JSON.stringify(op));
+    return callback(null, objArray);
+}
+
 pillbottle.getCourseDetails = function(pillBottleId, callback) {
     var qry = 'SELECT pill, course, description, timestamp FROM pillbottle ' +
     'LEFT JOIN pillbottledosage ' +

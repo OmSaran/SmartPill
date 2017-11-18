@@ -674,6 +674,19 @@ app.post('/api/pill/:id', passport.authenticate('jwt', { session: false }), veri
     })
 });
 
+app.get('/api/doc/patient/:patientUsername', passport.authenticate('jwt', { session: false }), function(req, res) {
+    pillbottle.getPatientDetailsByDoc(req.user.id, req.params.patientUsername, function(error, results) {
+        if(error) {
+            return res.status(500).json({ message: 'DB Error' });
+        }
+        if(_.isEmpty(results)) {
+            return res.status(201).send();
+        }
+
+        res.send(results);
+    })
+})
+
 var listener = app.listen(process.env.PORT || 3000, function() {
     console.log('Hosted on ' + listener.address().port);
 })
