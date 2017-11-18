@@ -131,7 +131,7 @@ pillbottle.getById = function (userId, pillBottleId, callback) {
             console.log(error);
             return callback ('DB Error', null);
         }
-        if(!results)
+        if(_.isEmpty(results))
             return callback(null, results);
         var retObj = {};
         retObj.id = pillBottleId;
