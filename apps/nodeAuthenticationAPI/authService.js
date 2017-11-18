@@ -340,7 +340,7 @@ app.post('/api/pillbottle/doc', passport.authenticate('jwt', { session: false })
  * @apiError (Error 500) InternalError Database Error
  */
 app.get('/api/pillbottle', passport.authenticate('jwt', { session: false }), function(req, res) {
-    res.send(404, 'api not found');
+    // res.send(404, 'api not found');
     pillbottle.getAllByUserId(req.user.id, function(error, results) {
         if(error)
             return res.status(500).json({message: 'DB Error'});

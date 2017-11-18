@@ -277,24 +277,36 @@ pillbottle.removeDosage = function(pillBottleId, callback) {
 }
 pillbottle.getAllByUserId = function (userId, callback) {
 
-    var qry = "SELECT pb.pill, pb.course, pb.description, dosage.timestamp, pb.id " + 
-    "FROM PillBottle pb, UserPill userpill, PillBottleDosage dosage " + 
-    "WHERE userpill.userId = ? AND pb.id = userpill.pillBottleId AND dosage.pillBottleId = userpill.pillBottleId;"
+
+    // var qry = "SELECT pb.pill, pb.course, pb.description, dosage.timestamp, pb.id " + 
+    // "FROM PillBottle pb, UserPill userpill, PillBottleDosage dosage " + 
+    // "WHERE userpill.userId = ? AND pb.id = userpill.pillBottleId AND dosage.pillBottleId = userpill.pillBottleId;"
+
+    var qry = 'SELECT pillbottle.id, pillbottle.pill, pillbottle.course, pillbottle.description, timestamp ' +
+    'FROM pillbottle ' +
+    'LEFT JOIN pillbottledosage ' +
+    'ON pillbottledosage.pillBottleId = pillbottle.id ' +
+    'WHERE pillbottle.id IN ( ' +
+        'SELECT pillBottleId FROM userpill WHERE userId = ? ' +
+    ') ';
 
     // connection.connect();
     connection.query(qry, [userId], function(error, results, fields) {
         if(error) {
             return callback('DB Error', null);
         }
-        console.log(JSON.stringify(results));
+        // console.log(JSON.stringify(results));
         var grouped = _.groupBy(results, function(obj) { return obj.id })
         var objectified = _.mapObject(grouped, function(val, key) { 
             var obj = {};
             obj.id = key;
             obj.pill = val[0].pill;
-            obj.course = results[0].course;
-            obj.description = results[0].description;
-            obj.dosage = _.map(val, function(obj) { return { time: obj.timestamp } });
+            obj.course = val[0].course;
+            obj.description = val[0].description;
+            // obj.dosage = _.map(val, function(obj) { return { time: obj.timestamp } });
+            var dosageArray = _.compact(_.pluck(val, 'timestamp'));
+            obj.dosage = _.map(dosageArray, function(obj) { return { time: obj } });
+
             return obj;
         });
 
