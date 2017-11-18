@@ -387,7 +387,7 @@ app.get('/api/pillbottle/:id', passport.authenticate('jwt', { session: false }),
     pillbottle.getById(req.user.id, req.params.id, function(error, results) {
         if(error)
             return res.send('error');
-        if(results.length == 0)
+        if(_.isEmpty(results))
             return res.sendStatus(204);
         res.send(results);
     })
