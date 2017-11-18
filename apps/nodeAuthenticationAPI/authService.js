@@ -622,7 +622,20 @@ app.get('/api/doc/patient', passport.authenticate('jwt', { session: false }), fu
     })
 })
 
-// To record consumption of pill
+/**
+ * @api {post} /api/pill/:id EventPillConsumed
+ * @apiName EventPillConsumed
+ * @apiDescription To send the event of pill consumption
+ * @apiGroup Events
+ * 
+ * @apiHeader Authorization Bearer Access Token
+ * @apiHeaderExample Request-Header:
+ * Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0Ij0xNTA4Njc1OTc1fQ.96NXj1C8wxkfy5f_vjDrDH1Pl4GzUB299ikwlWYinNg
+ * 
+ * @apiSuccess (201) {String} Created Successfully created event document in elasticsearch
+ * 
+ * @apiError (Error 500) InternalError Database Error
+ */
 app.post('/api/pill/:id', passport.authenticate('jwt', { session: false }), verifyConsumption, function(req, res) {
     var pillBottleId = req.params.id;
     var numberOfPills = req.body.numberOfPills;
