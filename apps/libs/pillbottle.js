@@ -149,7 +149,7 @@ pillbottle.getById = function (userId, pillBottleId, callback) {
         retObj.dosage = _.map(dosageArray, function(obj) {
                 return { time: obj };
             })
-        return callback(null, results[0]);
+        return callback(null, retObj);
     });
     // connection.end();
 }
