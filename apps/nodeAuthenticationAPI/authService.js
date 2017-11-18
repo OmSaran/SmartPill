@@ -623,7 +623,7 @@ app.get('/api/doc/patient', passport.authenticate('jwt', { session: false }), fu
 })
 
 // To record consumption of pill
-app.post('/api/pill/:id', passport.authenticate('jwt'), verifyConsumption, function(req, res) {
+app.post('/api/pill/:id', passport.authenticate('jwt', { session: false }), verifyConsumption, function(req, res) {
     var pillBottleId = req.params.id;
     var numberOfPills = req.body.numberOfPills;
     var timestamp = req.body.timestamp;
