@@ -81,7 +81,7 @@ passport.use(new LocalStrategy(
 var verifyAccess = function(req, res, next) {
     pillbottle.verifyModAccess(req.user.id, req.params.id, function(error, results) {
         if(error) {
-            return res.sendStatus(500);
+            return res.status(500).send();
         }
         if(results.length == 0) {
             return res.send(401);
@@ -93,7 +93,7 @@ var verifyAccess = function(req, res, next) {
 var verifyConsumption = function(req, res, next) {
     pillbottle.verifyConsumption(req.user.id, req.params.id, function(error, results) {
         if(error) {
-            return res.sendStatus(500);
+            return res.status(500).send();
         }
         if(_.isEmpty(results)) {
             return res.send(401);
@@ -389,7 +389,7 @@ app.get('/api/pillbottle/:id', passport.authenticate('jwt', { session: false }),
         if(error)
             return res.send('error');
         if(_.isEmpty(results))
-            return res.sendStatus(204);
+            return res.status(204).send();
         res.send(results);
     })
 });
@@ -433,7 +433,7 @@ app.post('/api/pillbottle/course/:id', passport.authenticate('jwt', { session: f
     pillbottle.newDosage(pillBottleId, description, pill, duration, dosage, function(error, results) {
         if(error) {
             console.log(error);
-            return res.sendStatus(500);
+            return res.status(500).send();
         }        
         pillbottle.getPatientDevIds(pillBottleId, function(error, results) {
             if(error) {
@@ -479,13 +479,13 @@ app.post('/api/pillbottle/course/:id', passport.authenticate('jwt', { session: f
         })
         
         console.log(results);
-        return res.sendStatus(204);
+        return res.status(204).send();
     })
 })
 
 
 /**
- * @api {delete} /api/dosage/pillbottle/:id Delete Course
+ * @api {delete} /api/pillbottle/course/:id Delete Course
  * @apiName Delete Course
  * @apiDescription To remove existing course in pillbottle
  * @apiGroup Pillbottle
@@ -503,21 +503,21 @@ app.delete('/api/pillbottle/course/:id', passport.authenticate('jwt', { session:
     var pillBottleId = req.params.id;
     pillbottle.removeDosage(pillBottleId, function(error, results) {
         if(error) {
-            return res.sendStatus(500);
+            return res.status(500).send();
         }
 
-        pillbottle.getPatientDevIds(pillBottleId, function(error, res) {
+        pillbottle.getPatientDevIds(pillBottleId, function(error, results) {
             if(error) {
                 console.log(error);
                 return res.send('Failed to fetch deviceIds');
             }
 
-            if(_.isEmpty(res))
-                return res.sendStatus(200);
+            if(_.isEmpty(results))
+                return res.status(200).send();
 
-            var androidRegTokens = res.android;
-            var iosRegTokens = res.ios;
-            var regTokens = res.all;
+            var androidRegTokens = results.android;
+            var iosRegTokens = results.ios;
+            var regTokens = results.all;
 
             var data = {
                 pillBottleId: pillBottleId
