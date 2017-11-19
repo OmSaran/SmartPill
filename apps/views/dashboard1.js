@@ -80,7 +80,7 @@ app.controller('sidebar-controller',function($scope, $http){
                                             
                                             }, 
                                             function(error) {
-                                                alert(error.status);
+                                                
                                                console.log("error "+error.status);
                                                 
                                             });
@@ -112,7 +112,7 @@ app.controller('sidebar-controller',function($scope, $http){
 
                                var requestJSON = {pill:pillNameParam, course:courseParam, description:pillDescriptionParam, dosage: $scope.dosageParam};
                                var req = JSON.stringify(requestJSON); 
-                               alert(idParam+" "+pillNameParam+" "+pillDescriptionParam+" "+courseParam+" "+$scope.dosageParam);
+                              
 
                                if(check_authBearer()) 
                                {
@@ -127,7 +127,7 @@ app.controller('sidebar-controller',function($scope, $http){
                                        }}).then(function(result) {
                                            
                                           
-                                           alert("success "+result.status);
+                                           alert("[Status: "+result.status+"]     Successfully changed the course for "+$scope.selectedPatientName);
                                            $scope.pillName = "";
                                            $scope.pillDescription = "";
                                            $scope.course = 0;
@@ -136,7 +136,7 @@ app.controller('sidebar-controller',function($scope, $http){
                                        
                                        }, 
                                        function(error) {
-                                           alert(error.status);
+                                          alert("Error "+error.status+"     Try Again");
                                           console.log("error "+error.status);
                                            
                                        });
