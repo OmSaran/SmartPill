@@ -95,7 +95,7 @@ pillbottle.verifyConsumption = function(userId, pillBottleId, callback) {
 
 pillbottle.getPatientDetailsByDoc = function(doctorId, patientUsername, callback) {
     console.log(doctorId + ' ' + patientUsername);
-    var qry = 'SELECT id, pill, course, description, timestamp FROM pillbottle ' +
+    var qry = 'SELECT id, pill, duration, description, timestamp FROM pillbottle ' +
     'LEFT JOIN pillbottledosage ' +
     'ON pillbottledosage.pillBottleId = pillbottle.id ' +
     'WHERE pillbottle.id IN ' +
@@ -120,7 +120,7 @@ pillbottle.getPatientDetailsByDoc = function(doctorId, patientUsername, callback
             var obj = {};
             obj.id = key;
             obj.pill = val[0].pill;
-            obj.course = val[0].course;
+            obj.course = val[0].duration;
             obj.description = val[0].description;
             // obj.dosage = _.map(val, function(obj) { return { time: obj.timestamp } });
             var dosageArray = _.compact(_.pluck(val, 'timestamp'));

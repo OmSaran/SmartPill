@@ -694,7 +694,14 @@ app.post('/api/pill/:id', passport.authenticate('jwt', { session: false }), veri
  *       "pill": null,
  *       "course": 0,
  *       "description": null,
- *       "dosage": []
+ *       "dosage": [
+ *          {
+ *              "time": "03:00:00"
+ *          },
+ *          {
+ *              "time": "04:00:00"
+ *          }
+ *      ]
  *   },
  *   {
  *       "id": "18",
