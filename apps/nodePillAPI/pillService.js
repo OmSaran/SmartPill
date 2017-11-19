@@ -144,41 +144,7 @@ app.get('/api/pillbottle/:id', passport.authenticate('jwt', { session: false }),
 });
 
 // To add/modify a dosage to a pillbottle. Only doctors allowed to do this.
-/**
- * @api {post} /api/dosage/pillbottle/:id Add new dosage
- * @apiName New dosage
- * @apiDescription To get pillbottle json of given id
- * @apiGroup Pillbottle
- * 
- * @apiHeader Authorization Bearer Access Token
- * @apiHeaderExample Request-Header: 
- * Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0Ij0xNTA4Njc1OTc1fQ.96NXj1C8wxkfy5f_vjDrDH1Pl4GzUB299ikwlWYinNg
- * 
- * @apiSuccess {Number} id id of the pill bottle
- * @apiSuccess {String} pill pill name
- * @apiSuccess {Number} course Course ID
- * @apiSuccess {JSON} dosage Dosage details
- * @apiSuccess {String} time Dosage timestamp
- * 
- * @apiSuccessExample {json} Success-Example: 
- *   {
- *      "id": 2,
- *      "pill": "Montek"
- *      "course": 4,
- *      "description": "Cold, Cough",
- *      "dosage": [
- *          {
- *              "time": "06:00:00"
- *          },
- *          {
- *              "time": "15:00:00"
- *          }
- *      ]
- *   }
- * 
- * @apiError (Error 401) Unauthorized Bad Access Token / Bad Doctor Username
- * @apiError (Error 500) InternalError Database Error
- */
+
 app.post('/api/dosage/pillbottle/:id', passport.authenticate('jwt', { session: false }), verifyAccess, function(req, res) {
     var pillBottleId = req.body.pillBottleId;
     var pill = req.body.pill;
