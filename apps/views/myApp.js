@@ -25,7 +25,8 @@ app.controller('login_controller',function($scope, $http){
                             }}).then(function(result) {
                                    if(localStorage.getItem("authBearer")=="")
                                         localStorage.setItem("authBearer",result.data.token); 
-                                    console.log(localStorage.getItem("authBearer"));    
+                                    console.log(localStorage.getItem("authBearer"));  
+                                    window.location = '/dashboard.html';
                                }, 
                                function(error) {
                                    $scope.message = "User does not exist. Create a new account?";
