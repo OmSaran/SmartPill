@@ -485,7 +485,7 @@ app.post('/api/pillbottle/course/:id', passport.authenticate('jwt', { session: f
  * @apiError (Error 401) Unauthorized Bad Access Token / Bad Doctor Username
  * @apiError (Error 500) InternalError Database Error
  */
-app.delete('/api/dosage/pillbottle/:id', passport.authenticate('jwt', { session: false }), verifyAccess, function(req, res) {
+app.delete('/api/pillbottle/course/:id', passport.authenticate('jwt', { session: false }), verifyAccess, function(req, res) {
     var pillBottleId = req.params.id;
     pillbottle.removeDosage(pillBottleId, function(error, results) {
         if(error) {
