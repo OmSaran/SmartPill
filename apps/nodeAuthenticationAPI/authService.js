@@ -28,18 +28,18 @@ var client = new elasticsearch.Client({
     // log: 'trace'
 });
 
-client.search({
-    index: 'dosage',
-    type: 'consumeEvent',
-    body: {
-        "query": {
-            "match_all": {}
-        }
-    }
-}).then(function (resp) {
-    var hits = resp.hits.hits[0];
-    console.log(hits);
-})
+// client.search({
+//     index: 'dosage',
+//     type: 'consumeEvent',
+//     body: {
+//         "query": {
+//             "match_all": {}
+//         }
+//     }
+// }).then(function (resp) {
+//     var hits = resp.hits.hits[0];
+//     console.log(hits);
+// })
 
 // middlewares
 app.use(bodyParser());
@@ -410,27 +410,41 @@ app.get('/api/pillbottle/:id', passport.authenticate('jwt', { session: false }),
  * @apiParam {String} description Description of the course
  * @apiParam {HH:MM:SS} dosage Array containing dosage times
  * 
+ * @apiParamExample {JSON} Request-Example
+ * {
+ *  "description": "Bronchitis",
+ *  "pill": "Unicontin",
+ *  "course": 5,
+ *  "dosage": [
+ *     "03:00:00",
+ *     "04:00:00"
+ *   ]
+ * }
+ * 
  * @apiSuccess (204) Success Content Created
  * @apiError (Error 500) InternalError Database Error
  */
 app.post('/api/pillbottle/course/:id', passport.authenticate('jwt', { session: false }), verifyAccess, function(req, res) {
-    var pillBottleId = req.body.pillBottleId;
+    var pillBottleId = req.params.id;
     var pill = req.body.pill;
     var description = req.body.description;
     var dosage = req.body.dosage;
     var duration = req.body.course;
     pillbottle.newDosage(pillBottleId, description, pill, duration, dosage, function(error, results) {
         if(error) {
+            console.log(error);
             return res.sendStatus(500);
         }        
         pillbottle.getPatientDevIds(pillBottleId, function(error, results) {
             if(error) {
                 console.log(error);
-                return res.send('Failed to fetch deviceIds');
+                // return res.send('Failed to fetch deviceIds');
             }
 
-            if(_.isEmpty(results))
-                return res.sendStatus(200);
+            if(_.isEmpty(results)) {
+                console.log('empty');
+                // return res.sendStatus(200);
+            }
 
             var androidRegTokens = results.android;
             var iosRegTokens = results.ios;
@@ -442,7 +456,7 @@ app.post('/api/pillbottle/course/:id', passport.authenticate('jwt', { session: f
                 dosage: dosage
             }
 
-            var message = new gcm.message({
+            var message = new gcm.Message({
                 priority: 'high',
                 timeToLive: 86400,
                 data: data,
@@ -461,7 +475,7 @@ app.post('/api/pillbottle/course/:id', passport.authenticate('jwt', { session: f
             //     res.sendStatus(200);
             // });
 
-            res.sendStatus(204);
+            // res.sendStatus(204);
         })
         
         console.log(results);

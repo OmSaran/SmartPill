@@ -223,8 +223,8 @@ pillbottle.getPatientDevIds = function(pillBottleId, callback) {
 }
 
 // can be made more efficient. Do asynchronously then if any one returns error, rollback the rest.
-pillbottle.newDosage = function(pillBottleId, description, pill, dosage, duration, callback) {
-    var qry = "UPDATE pillbottle SET pill = ?, description = ?, courseId = courseId +1, duration = ? WHERE id = ?";
+pillbottle.newDosage = function(pillBottleId, description, pill, duration, dosage, callback) {
+    var qry = "UPDATE pillbottle SET pill = ?, description = ?, course = course +1, duration = ? WHERE id = ?";
     // connection.on('error', function(err) {
     //     console.log("I ain't not gonna throw that error mofo");
     // })
@@ -247,14 +247,12 @@ pillbottle.newDosage = function(pillBottleId, description, pill, dosage, duratio
                 }
                 var qry3 = "INSERT INTO PillBottleDosage (pillBottleId, timestamp) VALUES ?";
                 var arr = [];
-                console.log(dosage);
                 for(i in dosage) {
                     var item = [];
                     item.push(pillBottleId);
-                    item.push(dosage[i].time);
+                    item.push(dosage[i]);
                     arr.push(item);
                 }
-                console.log(arr);
                 connection.query(qry3, [arr], function(error, results, fields) {
                     if(error) {
                         console.log(error);
