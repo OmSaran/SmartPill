@@ -471,9 +471,9 @@ app.post('/api/pillbottle/course/:id', passport.authenticate('jwt', { session: f
 
 
 /**
- * @api {delete} /api/dosage/pillbottle/:id Delete dosage
- * @apiName Delete dosage
- * @apiDescription To remove existing dosage in pillbottle
+ * @api {delete} /api/dosage/pillbottle/:id Delete Course
+ * @apiName Delete Course
+ * @apiDescription To remove existing course in pillbottle
  * @apiGroup Pillbottle
  * 
  * @apiHeader Authorization Bearer Access Token

@@ -285,7 +285,7 @@ pillbottle.removeDosage = function(pillBottleId, callback) {
         }
         async.parallel([
             function(cb) {
-                var qry = "UPDATE pillbottle SET pill = NULL, description = NULL WHERE id = ? ";
+                var qry = "UPDATE pillbottle SET pill = NULL, description = NULL, duration = NULL WHERE id = ? ";
                 connection.query(qry, [pillBottleId], function(error, results, fields) {
                     if(error) {
                         cb(error, null);
