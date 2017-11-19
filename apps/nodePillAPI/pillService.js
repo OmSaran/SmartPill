@@ -201,21 +201,6 @@ app.post('/api/dosage/pillbottle/:id', passport.authenticate('jwt', { session: f
 })
 
 
-/**
- * @api {delete} /api/dosage/pillbottle/:id Delete dosage
- * @apiName Delete dosage
- * @apiDescription To remove existing dosage in pillbottle
- * @apiGroup Pillbottle
- * 
- * @apiHeader Authorization Bearer Access Token
- * @apiHeaderExample Request-Header: 
- * Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0Ij0xNTA4Njc1OTc1fQ.96NXj1C8wxkfy5f_vjDrDH1Pl4GzUB299ikwlWYinNg
- * 
- * @apiSuccess {String} message ok
- * 
- * @apiError (Error 401) Unauthorized Bad Access Token / Bad Doctor Username
- * @apiError (Error 500) InternalError Database Error
- */
 app.delete('/api/dosage/pillbottle/:id', passport.authenticate('jwt', { session: false }), verifyAccess, function(req, res) {
     var pillBottleId = req.params.id;
     pillbottle.removeDosage(pillBottleId, function(error, results) {
