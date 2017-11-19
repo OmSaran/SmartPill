@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="dashboardApp">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- Favicon icon -->
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon.png">
+    <title>SmartPill - Doctor Dashboard</title>
+    <!-- Bootstrap Core CSS -->
+    <link href="/dashboard_page_assets/assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <!-- This page CSS -->
+    <!-- chartist CSS -->
+    <link href="/dashboard_page_assets/assets/plugins/chartist-js/dist/chartist.min.css" rel="stylesheet">
+    <link href="/dashboard_page_assets/assets/plugins/chartist-plugin-tooltip-master/dist/chartist-plugin-tooltip.css" rel="stylesheet">
+    <!--c3 CSS -->
+    <link href="/dashboard_page_assets/assets/plugins/c3-master/c3.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="/dashboard_page_assets/css/style.css" rel="stylesheet">
+    <!-- Dashboard 1 Page CSS -->
+    <link href="/dashboard_page_assets/css/pages/dashboard.css" rel="stylesheet">
+    <!-- You can change the theme colors from here -->
+    <link href="/dashboard_page_assets/css/colors/default-dark.css" id="theme" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+    
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <script src="dashboard1.js"></script>
+
+</head>
+
+<body class="fix-header fix-sidebar card-no-border">
+    <!-- ============================================================== -->
+    <!-- Preloader - style you can find in spinners.css -->
+    <!-- ============================================================== -->
+    
+    <div class="preloader">
+        <div class="loader">
+            <div class="loader__figure"></div>
+            <p class="loader__label">Smart Pill </p>
+            
+            
+        </div>
+    </div>
+    <!-- ============================================================== -->
+    <!-- Main wrapper - style you can find in pages.scss -->
+    <!-- ============================================================== -->
+    <div id="main-wrapper">
+        <!-- ============================================================== -->
+        <!-- Topbar header - style you can find in pages.scss -->
+        <!-- ============================================================== -->
+        <header class="topbar">
+            <nav class="navbar top-navbar navbar-expand-md navbar-light">
+                <!-- ============================================================== -->
+                <!-- Logo -->
+                <!-- ============================================================== -->
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="index.html">
+                        <!-- Logo icon --><b>
+                            <img src="/dashboard_page_assets/assets/images/logo-icon.png" alt="Smart Pill" class="dark-logo" />
+                        </b>
+                        <!--End Logo icon -->
+                        <!-- Logo text -->
+                        <span>
+                            <strong><b> Smart Pill </b></strong></span>
+                            
+                        </span>
+                    </a>
+                </div>
+                <!-- ============================================================== -->
+                <!-- End Logo -->
+                <!-- ============================================================== -->
+                <div class="navbar-collapse" ng-controller="navbar-controller">
+                    <!-- ============================================================== -->
+                    <!-- toggle and nav items -->
+                    <!-- ============================================================== -->
+                    <ul class="navbar-nav mr-auto">
+                        <!-- This is  -->
+                        <li class="nav-item"> <a class="nav-link nav-toggler hidden-md-up waves-effect waves-dark" href="javascript:void(0)"><i class="ti-menu"></i></a> </li>
+                    </ul>
+                    <!-- ============================================================== -->
+                    <!-- User profile and search -->
+                    <!-- ============================================================== -->
+                    <ul class="navbar-nav my-lg-0">
+                        <!-- ============================================================== -->
+                        <!-- Search -->
+                        <!-- ============================================================== -->
+                        
+                        <!-- ============================================================== -->
+                        <!-- Profile -->
+                        <!-- ============================================================== -->
+                        <li class="nav-item">
+                            <!--<a class="nav-link waves-effect waves-dark" href="#"><img src="/dashboard_page_assets/assets/images/users/1.jpg" alt="user" class="profile-pic" /></a>-->
+                            <p style="margin:0;padding:0;"><strong> Hello <b style="color:rgb(239,83,80);">{{username}} !</b></strong></p>
+                            <button style="border:none;background-color:transparent;font-size:10px;padding:0;margin:0;color:blue;float:right;" ng-click="logout()">logout</button>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </header>
+        <!-- ============================================================== -->
+        <!-- End Topbar header -->
+        <!-- ============================================================== -->
+        <!-- ============================================================== -->
+        <!-- Left Sidebar - style you can find in sidebar.scss  -->
+        <!-- ============================================================== -->
+        <div ng-controller="sidebar-controller as sctrl">
+        <aside class="left-sidebar">
+            <!-- Sidebar scroll-->
+            <div  class="scroll-sidebar">
+                <!-- Sidebar navigation-->
+                <nav class="sidebar-nav">
+                    <p style="font-size:20px;color:rgb(220,220,220);text-align:center;font-weight:500"><b>Patients</b></p>
+                    <ul id="sidebarnav">
+                        <li ng-repeat="a in patients"> <a class="waves-effect waves-dark" href="#" ng-click="getPatientDetails(a)" aria-expanded="false"><i class="mdi mdi-account-check"></i><span class="hide-menu"><b>{{a.name}} </b><span style="font-size:12px;">(@{{a.username}})</span></span></a></li>
+                       
+                    </ul>
+
+                    <div class="text-center m-t-30">
+                       <!-- <a href="https://wrappixel.com/templates/adminpro" class="btn waves-effect waves-light btn-info hidden-md-down"> Upgrade to Pro</a> -->
+                    </div>
+                </nav>
+                <!-- End Sidebar navigation -->
+            </div>
+            <!-- End Sidebar scroll-->
+        </aside>
+        <!-- ============================================================== -->
+        <!-- End Left Sidebar - style you can find in sidebar.scss  -->
+        <!-- ============================================================== -->
+        <!-- ============================================================== -->
+        <!-- Page wrapper  -->
+        <!-- ============================================================== -->
+        <div class="page-wrapper">
+            <!-- ============================================================== -->
+            <!-- Container fluid  -->
+            <!-- ============================================================== -->
+            <div class="container-fluid">
+                <!-- ============================================================== -->
+                <!-- Bread crumb and right sidebar toggle -->
+                <!-- ============================================================== -->
+                <div class="row page-titles">
+                    <div class="col-md-5 align-self-center">
+                        <h3 style="font-weight:700" class="text-themecolor">Dashboard</h3>
+                    </div>
+                    <div class="col-md-7 align-self-center">
+                        <!--<a href="https://wrappixel.com/templates/adminpro" class="btn waves-effect waves-light btn-danger pull-right hidden-sm-down"> Upgrade to Pro</a> -->
+                    </div>
+                </div>
+                <!-- ============================================================== -->
+                <!-- End Bread crumb and right sidebar toggle -->
+                <!-- ============================================================== -->
+                <!-- ============================================================== -->
+                <!-- Sales overview chart -->
+                <!-- ============================================================== -->
+                <!--<div class="row">
+                    <div class="col-lg-9 col-md-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="d-flex">
+                                    <div>
+                                        <h3 class="card-title m-b-5"><span class="lstick"></span>Sales Overview </h3>
+                                    </div>
+                                    <div class="ml-auto">
+                                        <select class="custom-select b-0">
+                                            <option selected="">January 2017</option>
+                                            <option value="1">February 2017</option>
+                                            <option value="2">March 2017</option>
+                                            <option value="3">April 2017</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div id="sales-overview2" class="p-relative" style="height:360px;"></div>
+                            </div>
+                        </div>
+                    </div>-->
+                    <!-- ============================================================== -->
+                    <!-- visit charts-->
+                    <!-- ============================================================== -->
+                    <!--<div class="col-lg-3 col-md-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title"><span class="lstick"></span>Visit Separation</h4>
+                                <div id="visitor" style="height:250px; width:100%;"></div>
+                                <table class="table vm font-14">
+                                    <tr>
+                                        <td class="b-0">Mobile</td>
+                                        <td class="text-right font-medium b-0">38.5%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Tablet</td>
+                                        <td class="text-right font-medium">30.8%</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>-->
+                <!-- ============================================================== -->
+                <!-- Projects of the month -->
+                <!-- ============================================================== -->
+                <div class="row">
+                    <div class="col-lg-6 col-md-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="d-flex">
+                                    <div>
+                                        <h4  style="float:left;" class="card-title"><span class="lstick"></span>Patient Details<b><br/>Name : {{selectedPatientName}}</b></h4>
+                                        <a style="float:right;font-size:13px;margin-left:150px;" href="#" ng-click="deleteCourse()" class="btn waves-effect waves-light btn-danger pull-right hidden-sm-down" style="font-size:10px;float:right;">Delete Course</a>
+                                    </div>
+                                </div>
+                                <div class="table-responsive m-t-20">
+                                    <table class="table vm no-th-brd no-wrap pro-of-month" style="background-color:rgb(220,220,220);font-weight:600">
+                                        <thead>
+                                            <tr>
+                                                
+                                                <th style="font-weight:900;font-size:20px;">Content</th>
+                                                <th></th>
+                                                <th style="font-weight:900;font-size:20px;">Value</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                
+                                                <td>
+                                                    <h6>PillBottle ID</h6><small class="text-muted"></small></td>
+                                                <td></td>
+                                                <td>{{patientDetails[0].id}}</td>
+                                               
+                                            </tr>
+                                            <tr>
+                                                    
+                                                    <td>
+                                                        <h6>Name of Pills</h6><small class="text-muted"></small></td>
+                                                    <td></td>
+                                                    <td>{{patientDetails[0].pill}}</td>
+                                                   
+                                            </tr>
+                                            <tr>
+                                                    
+                                                    <td>
+                                                        <h6>Course</h6><small class="text-muted"></small></td>
+                                                    <td></td>
+                                                    <td>{{patientDetails[0].course}}</td>
+                                                   
+                                            </tr>
+                                            <tr>
+                                                    
+                                                    <td>
+                                                        <h6>Pill Description</h6><small class="text-muted"></small></td>
+                                                    <td></td>
+                                                    <td>{{patientDetails[0].description}}</td>
+                                                   
+                                            </tr>
+                                            <tr>
+                                                    
+                                                    <td>
+                                                        <h6>Dosage Time</h6><small class="text-muted"></small></td>
+                                                    
+                                                    <td>
+                                                      <tr ng-repeat="dose in patientDetails[0].dosage">
+                                                        <td></td>
+                                                        <td></td>
+                                                        
+                                                        <td>{{dose.time}}</td>
+                                                      </tr>  
+                                                        </td>
+                                                   
+                                            </tr>
+                                            <!--<tr class="active">
+                                                <td><span class="round"><img src="../assets/images/users/2.jpg" alt="user" width="50"></span></td>
+                                                <td>
+                                                    <h6>Andrew</h6><small class="text-muted">Project Manager</small></td>
+                                                <td>Real Homes</td>
+                                                <td>Medium</td>
+                                            </tr>
+                                            <tr>
+                                                <td><span class="round round-success"><img src="../assets/images/users/3.jpg" alt="user" width="50"></span></td>
+                                                <td>
+                                                    <h6>Bhavesh patel</h6><small class="text-muted">Developer</small></td>
+                                                <td>MedicalPro Theme</td>
+                                                <td>High</td>
+                                            </tr>
+                                            <tr>
+                                                <td><span class="round round-primary"><img src="../assets/images/users/4.jpg" alt="user" width="50"></span></td>
+                                                <td>
+                                                    <h6>Nirav Joshi</h6><small class="text-muted">Frontend Eng</small></td>
+                                                <td>Elite Admin</td>
+                                                <td>Low</td>
+                                            </tr>
+                                            <tr>
+                                                <td><span class="round round-warning"><img src="../assets/images/users/5.jpg" alt="user" width="50"></span></td>
+                                                <td>
+                                                    <h6>Micheal Doe</h6><small class="text-muted">Content Writer</small></td>
+                                                <td>Helping Hands</td>
+                                                <td>High</td>
+                                            </tr>-->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- contact -->
+                    <div class="col-lg-6 col-md-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="d-flex">
+                                    <h4 class="card-title"><span class="lstick"></span><b>Add / Change Course</b></h4>
+                                </div>
+                                <div class="message-box contact-box">
+                                    <form>
+                                        <br/>
+                                        <br/>
+                                        <table class="table vm font-14">
+                                            <tr>
+                                                <td><label class="label label-light-danger" style="font-weight:700;font-size:10px;"> Patient Name </label></td>
+                                                <td><input type="text" style="background-color:rgb(240,240,240);border-shadow:none;border:none;padding:2px;" readonly value="{{selectedPatientName}}" required/>
+                                                <span style="color:red;font-weight:900;font-size:20px;"><sup>*</sup></span></td>
+                                            </tr>
+                                            <tr>
+                                                    <td><label class="label label-light-danger" style="font-weight:700;font-size:10px;"> PillBottle ID </label></td>
+                                                    <td><input type="text" style="background-color:rgb(240,240,240);border-shadow:none;border:none;padding:2px;" readonly value="{{patientDetails[0].id}}" required/>
+                                                    <span style="color:red;font-weight:900;font-size:20px;"><sup>*</sup></span></td>
+                                            </tr>
+                                            <tr>
+                                                <td><label class="label label-light-danger" style="font-weight:700;font-size:10px;"> Pill Name </label></td>
+                                                <td><input ng-model="pillName" type="text" required/>
+                                                <span style="color:red;font-weight:900;font-size:20px;"><sup>*</sup></span></td>
+                                            </tr>
+                                            <tr>
+                                                <td><label class="label label-light-danger" style="font-weight:700;font-size:10px;"> Description </label></td>
+                                                <td><input  type="text" ng-model="pillDescription"></td>
+                                               
+                                            </tr>
+                                            <tr>
+                                                <td><label class="label label-light-danger" style="font-weight:700;font-size:10px;"> Number of Days(Course) </label></td>
+                                                <td><input  type="number" ng-model="course" min="1" max="190" value="0" required/>
+                                                <span style="color:red;font-weight:900;font-size:20px;"><sup>*</sup></span></td>
+                                            </tr>
+                                            <tr>
+                                                <td><label class="label label-light-danger" style="font-weight:700;font-size:10px;"> Dosage Timings <span style="font-size:10px;">hh:mm:ss</span></label></td>
+                                                <td><input  type="text" id="dosageField" ng-model="dosage" min="1" max="190" value="0" required/>
+                                                <span style="color:red;font-weight:900;font-size:20px;"><sup>*</sup></span></td>
+                                                
+                                            </tr>
+                                            <tr>
+                                                    <td></td>
+                                                    <td><a href="#" ng-click="addDosageTime()" class="btn waves-effect waves-light btn-danger pull-right hidden-sm-down" style="font-size:10px;float:right;">Add New Dosage</a></td>
+                                            </tr>
+                                            
+                                            
+                                    </table>
+                                    <div>
+                                    <label style="float:left;"><strong>Added Dosages</strong><br/><span style="font-size:10px;">(editable)</span></label>
+                                    <textarea style="width:250px; height:100px;float:right;">
+                                       
+                                            {{dosageParam}}
+                                               
+                                    </textarea>
+                                    </div>
+                                    <br/>
+                                    <br/>
+                                    <br/><br/>
+                                    <br/>
+                                    <div>
+                                            <input type="submit" hidden/>
+                                            
+                                            <a href="#" ng-click="updateCourse()" class="btn waves-effect waves-light btn-danger pull-right hidden-sm-down">Update</a>
+                                            
+                                    </div>
+
+                                    </form>
+                                    <!--<div class="message-widget contact-widget">
+                                        
+                                        <a href="#">
+                                            <div class="user-img"> <img src="../assets/images/users/1.jpg" alt="user" class="img-circle"> <span class="profile-status online pull-right"></span> </div>
+                                            <div class="mail-contnet">
+                                                <h5>Pavan kumar</h5> <span class="mail-desc">info@wrappixel.com</span></div>
+                                        </a>
+                                        
+                                        <a href="#">
+                                            <div class="user-img"> <img src="../assets/images/users/2.jpg" alt="user" class="img-circle"> <span class="profile-status busy pull-right"></span> </div>
+                                            <div class="mail-contnet">
+                                                <h5>Sonu Nigam</h5> <span class="mail-desc">pamela1987@gmail.com</span></div>
+                                        </a>
+                                        
+                                        <a href="#">
+                                            <div class="user-img"> <span class="round">A</span> <span class="profile-status away pull-right"></span> </div>
+                                            <div class="mail-contnet">
+                                                <h5>Arijit Sinh</h5> <span class="mail-desc">cruise1298.fiplip@gmail.com</span></div>
+                                        </a>
+                                        
+                                        <a href="#">
+                                            <div class="user-img"> <img src="../assets/images/users/4.jpg" alt="user" class="img-circle"> <span class="profile-status offline pull-right"></span> </div>
+                                            <div class="mail-contnet">
+                                                <h5>Pavan kumar</h5> <span class="mail-desc">kat@gmail.com</span></div>
+                                        </a>
+                                       
+                                        <a href="#">
+                                            <div class="user-img"> <img src="../assets/images/users/5.jpg" alt="user" class="img-circle"> <span class="profile-status offline pull-right"></span> </div>
+                                            <div class="mail-contnet">
+                                                <h5>Andrew</h5> <span class="mail-desc">and@gmail.com</span></div>
+                                        </a>
+                                        
+                                        <a href="#">
+                                            <div class="user-img"> <img src="../assets/images/users/6.jpg" alt="user" class="img-circle"> <span class="profile-status offline pull-right"></span> </div>
+                                            <div class="mail-contnet">
+                                                <h5>Jonathan Jones</h5> <span class="mail-desc">jj@gmail.com</span></div>
+                                        </a>
+                                    </div>-->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- ============================================================== -->
+                <!-- Blog and website visit -->
+                <!-- ============================================================== -->
+                <!--<div class="row">
+                    <div class="col-lg-4 col-xlg-3">
+                        <div class="card">
+                            <img class="card-img-top img-responsive" src="../assets/images/big/img1.jpg" alt="Card image cap">
+                            <div class="card-body">
+                                <h3 class="font-normal">Business development of rules 2017</h3>
+                                <span class="label label-info label-rounded">Technology</span>
+                                <p class="m-b-0 m-t-20">Titudin venenatis ipsum aciat. Vestibulum ullamcorper quam. nenatis ipsum ac feugiat. Ibulum ullamcorper</p>
+                                <div class="d-flex m-t-20">
+                                    <button class="btn p-l-0 btn-link ">Read more</button>
+                                    <div class="ml-auto align-self-center">
+                                        <a href="javascript:void(0)" class="link m-r-10"><i class="fa fa-heart-o"></i></a>
+                                        <a href="javascript:void(0)" class="link m-r-10"><i class="fa fa-share-alt"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-8 col-xlg-9">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="d-flex">
+                                    <h4 class="card-title"><span class="lstick"></span>Website Visit</h4>
+                                    <ul class="list-inline m-b-0 ml-auto">
+                                        <li>
+                                            <h6 class="text-muted text-success"><i class="fa fa-circle font-10 m-r-10 "></i>Site A view</h6> </li>
+                                        <li>
+                                            <h6 class="text-muted text-info"><i class="fa fa-circle font-10 m-r-10"></i>Site B view</h6> </li>
+                                    </ul>
+                                </div>
+                                <div class="website-visitor p-relative m-t-30" style="width:100%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>-->
+                <!-- ============================================================== -->
+                <!-- End Page Content -->
+                <!-- ============================================================== -->
+            </div>
+            <!-- ============================================================== -->
+            <!-- End Container fluid  -->
+            <!-- ============================================================== -->
+            <!-- ============================================================== -->
+            <!-- footer -->
+            <!-- ============================================================== -->
+            <footer class="footer"> © 2017 SmartPill </footer>
+            <!-- ============================================================== -->
+            <!-- End footer -->
+            <!-- ============================================================== -->
+        </div>
+        </div>
+        <!-- ============================================================== -->
+        <!-- End Page wrapper  -->
+        <!-- ============================================================== -->
+    </div>
+    <!-- ============================================================== -->
+    <!-- End Wrapper -->
+    <!-- ============================================================== -->
+    <!-- ============================================================== -->
+    <!-- All Jquery -->
+    <!-- ============================================================== -->
+    <script src="/dashboard_page_assets/assets/plugins/jquery/jquery.min.js"></script>
+    <!-- Bootstrap popper Core JavaScript -->
+    <script src="/dashboard_page_assets/assets/plugins/bootstrap/js/popper.min.js"></script>
+    <script src="/dashboard_page_assets/assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <!-- slimscrollbar scrollbar JavaScript -->
+    <script src="/dashboard_page_assets/js/perfect-scrollbar.jquery.min.js"></script>
+    <!--Wave Effects -->
+    <script src="/dashboard_page_assets/js/waves.js"></script>
+    <!--Menu sidebar -->
+    <script src="/dashboard_page_assets/js/sidebarmenu.js"></script>
+    <!--Custom JavaScript -->
+    <script src="/dashboard_page_assets/js/custom.min.js"></script>
+    <!-- ============================================================== -->
+    <!-- This page plugins -->
+    <!-- ============================================================== -->
+    <script src="/dashboard_page_assets/assets/plugins/chartist-js/dist/chartist.min.js"></script>
+    <script src="/dashboard_page_assets/assets/plugins/chartist-plugin-tooltip-master/dist/chartist-plugin-tooltip.min.js"></script>
+    <!--c3 JavaScript -->
+    <script src="/dashboard_page_assets/assets/plugins/d3/d3.min.js"></script>
+    <script src="/dashboard_page_assets/assets/plugins/c3-master/c3.min.js"></script>
+    <!-- Chart JS -->
+    <script src="/dashboard_page_assets/js/dashboard.js"></script>
+</body>
+
+</html>
