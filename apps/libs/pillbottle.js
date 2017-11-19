@@ -66,7 +66,24 @@ pillbottle.addDoctor = function(doctorUsername, pillBottleId, callback) {
     })
 }
 
+pillbottle.userHasPillBottle = function(userId, callback) {
+    var qry = 'SELECT pillBottleId FROM userpill WHERE userId = ?';
+    connection.query(qry, [userId], function(error, results) {
+        if(error) {
+            return callback(null, null);
+        }
 
+        if(_.isEmpty(results)) {
+            return callback(null, null);
+        }
+
+        var ret = {
+            id: results[0].pillBottleId
+        }
+
+        callback(null, ret);
+    })
+}
 
 pillbottle.verifyModAccess = function (userId, pillBottleId, callback) {
     var qry = "SELECT users.name FROM users, userpill " + 

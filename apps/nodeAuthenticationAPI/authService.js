@@ -244,7 +244,7 @@ app.post('/api/device', passport.authenticate('jwt', {session: false}), function
  * @apiError (Error 401) Unauthorized Bad Access Token
  * @apiError (Error 500) InternalError Database Error
  */
-app.post('/api/pillbottle', passport.authenticate('jwt', { session: false }), function(req, res) {
+app.post('/api/pillbottle', passport.authenticate('jwt', { session: false }), dontAllowMultiple, function(req, res) {
     pillbottle.add(req.user.id, function(error, results) {
         if(error) {
             return res.status(500).json({ message: "DB Error" });
@@ -253,6 +253,13 @@ app.post('/api/pillbottle', passport.authenticate('jwt', { session: false }), fu
     });
 })
 
+function dontAllowMultiple(req, res, next) {
+    pillbottle.userHasPillBottle(req.user.id, function(error, results) {
+        if(_.isEmpty(results))
+            return next();
+        res.status(200).json(results);
+    })
+}
 
 /**
  * @api {post} /api/pillbottle/doc Authorize Doctor
